@@ -12,7 +12,7 @@ Este proyecto consiste en el desarrollo de un sistema basado en arquitectura de 
 
 El sistema está compuesto por cinco microservicios independientes que se comunican entre sí a través de APIs REST. A continuación se presenta el diagrama de la arquitectura general:
 
-![Arquitectura del Sistema](diagrama.svg)
+![Arquitectura del Sistema](diagrama.png)
 
 ### Tecnologías Utilizadas
 
