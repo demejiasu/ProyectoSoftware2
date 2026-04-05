@@ -21,7 +21,7 @@ El proyecto utiliza diferentes frameworks y tecnologías según lo solicitado en
 | Componente | Tecnología |
 |------------|------------|
 | API Gateway | Express.js (Node.js) |
-| Auth Service | Node.js (Express) |
+| Auth Service | Laravel (PHP) |
 | User Service | Django (Python) |
 | Product Service | Flask (Python) |
 | Order Service | Express.js (Node.js) |
@@ -334,7 +334,10 @@ ProyectoSoftware2/
 │   ├── package.json
 │   └── Dockerfile
 ├── auth-service/
-│   ├── index.js
+│   ├── app/
+│   ├── routes/
+│   ├── public/
+│   ├── bootstrap/
 │   └── Dockerfile
 ├── user-service/
 │   ├── user_service/

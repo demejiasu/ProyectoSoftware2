@@ -30,6 +30,13 @@ services:
     build: ./auth-service
     ports:
       - "8000:8000"
+    depends_on:
+      - mysql
+    environment:
+      - DB_HOST=mysql
+      - DB_DATABASE=auth_db
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
 
   mysql:
     image: mysql:8
