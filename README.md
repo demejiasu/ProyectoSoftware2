@@ -12,27 +12,16 @@ Este proyecto consiste en el desarrollo de un sistema basado en arquitectura de 
 
 El sistema está compuesto por cinco microservicios independientes que se comunican entre sí a través de APIs REST. A continuación se presenta el diagrama de la arquitectura general:
 
-```mermaid
-graph TB
-    C[Cliente]
-    GW[API Gateway :3000]
-    AUTH[Auth Service :8000]
-    USER[User Service :8001]
-    PROD[Product Service :8002]
-    ORDER[Order Service :8003]
-    NOTIF[Notification Service :8004]
-    MYSQL[(MySQL)]
-    POSTGRES[(PostgreSQL)]
-    MONGO[(MongoDB)]
-    C --> GW
-    GW --> AUTH
-    GW --> USER
-    GW --> PROD
-    GW --> ORDER
-    GW --> NOTIF
-    AUTH --> MYSQL
-    USER --> POSTGRES
-    PROD --> MONGO
+```
+Cliente --> API Gateway (puerto 3000)
+API Gateway --> Auth Service (puerto 8000)
+API Gateway --> User Service (puerto 8001)
+API Gateway --> Product Service (puerto 8002)
+API Gateway --> Order Service (puerto 8003)
+API Gateway --> Notification Service (puerto 8004)
+Auth Service --> MySQL
+User Service --> PostgreSQL
+Product Service --> MongoDB
 ```
 
 ### Tecnologías Utilizadas
