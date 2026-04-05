@@ -12,17 +12,7 @@ Este proyecto consiste en el desarrollo de un sistema basado en arquitectura de 
 
 El sistema está compuesto por cinco microservicios independientes que se comunican entre sí a través de APIs REST. A continuación se presenta el diagrama de la arquitectura general:
 
-```
-Cliente --> API Gateway (puerto 3000)
-API Gateway --> Auth Service (puerto 8000)
-API Gateway --> User Service (puerto 8001)
-API Gateway --> Product Service (puerto 8002)
-API Gateway --> Order Service (puerto 8003)
-API Gateway --> Notification Service (puerto 8004)
-Auth Service --> MySQL
-User Service --> PostgreSQL
-Product Service --> MongoDB
-```
+![Arquitectura del Sistema](diagrama.svg)
 
 ### Tecnologías Utilizadas
 
