@@ -14,27 +14,26 @@ El sistema está compuesto por cinco microservicios independientes que se comuni
 
 ```mermaid
 graph TB
-    C[Cliente Web/Mobile]
-    GW[API Gateway - Express.js - Puerto 3000]
-    AUTH[Auth Service - Node.js - Puerto 8000]
-    USER[User Service - Django - Puerto 8001]
-    PROD[Product Service - Flask - Puerto 8002]
-    ORDER[Order Service - Express - Puerto 8003]
-    NOTIF[Notification Service - Flask - Puerto 8004]
-    MYSQL[(MySQL - auth_db)]
-    POSTGRES[(PostgreSQL - user_db)]
+    C[Cliente]
+    GW[API Gateway :3000]
+    AUTH[Auth Service :8000]
+    USER[User Service :8001]
+    PROD[Product Service :8002]
+    ORDER[Order Service :8003]
+    NOTIF[Notification Service :8004]
+    MYSQL[(MySQL)]
+    POSTGRES[(PostgreSQL)]
     MONGO[(MongoDB)]
-    
-    C -->|HTTP| GW
-    GW -->|REST API| AUTH
-    GW -->|REST API| USER
-    GW -->|REST API| PROD
-    GW -->|REST API| ORDER
-    GW -->|REST API| NOTIF
+    C --> GW
+    GW --> AUTH
+    GW --> USER
+    GW --> PROD
+    GW --> ORDER
+    GW --> NOTIF
     AUTH --> MYSQL
     USER --> POSTGRES
     PROD --> MONGO
-    ```
+```
 
 ### Tecnologías Utilizadas
 
@@ -348,40 +347,28 @@ El peso determina la frecuencia relativa con la que cada endpoint es llamado dur
 
 ```
 ProyectoSoftware2/
-├── docker-compose.yml          # Orquestación de contenedores
-├── locustfile.py               # Pruebas de rendimiento
-├── README.md                   # Documentación
-│
-├── api-gateway/                # API Gateway (Express.js)
+├── docker-compose.yml
+├── locustfile.py
+├── README.md
+├── api-gateway/
 │   ├── index.js
 │   ├── package.json
 │   └── Dockerfile
-│
-├── auth-service/               # Servicio de Autenticación (Laravel)
-│   ├── app/
-│   ├── routes/
-│   │   └── web.php
-│   ├── config/
+├── auth-service/
+│   ├── index.js
 │   └── Dockerfile
-│
-├── user-service/               # Servicio de Usuarios (Django)
+├── user-service/
 │   ├── user_service/
-│   │   ├── views.py
-│   │   ├── urls.py
-│   │   └── settings.py
 │   ├── manage.py
 │   └── Dockerfile
-│
-├── product-service/            # Servicio de Productos (Flask)
+├── product-service/
 │   ├── app.py
 │   └── Dockerfile
-│
-├── order-service/              # Servicio de Órdenes (Express.js)
+├── order-service/
 │   ├── index.js
 │   ├── package.json
 │   └── Dockerfile
-│
-└── notification-service/       # Servicio de Notificaciones (Flask)
+└── notification-service/
     ├── app.py
     └── Dockerfile
 ```
@@ -393,35 +380,19 @@ ProyectoSoftware2/
 ### Docker
 
 ```bash
-# Levantar todos los servicios en segundo plano
 docker-compose up -d
-
-# Ver logs de todos los servicios
 docker-compose logs -f
-
-# Ver logs de un servicio específico
-docker-compose logs -f api-gateway
-
-# Detener todos los servicios
 docker-compose down
-
-# Reconstruir contenedores después de cambios
 docker-compose up --build
-
-# Eliminar volúmenes de datos
 docker-compose down -v
 ```
 
 ### Locust
 
 ```bash
-# Ejecutar en modo headless (sin interfaz web)
+locust -f locustfile.py --host=http://localhost:3000
 locust -f locustfile.py --host=http://localhost:3000 --headless -u 100 -r 10 -t 5m
-
-# Generar reporte HTML al finalizar
-locust -f locustfile.py --host=http://localhost:3000 --headless -u 50 -r 5 -t 2m --html report.html
 ```
-
 
 ## Licencia
 
