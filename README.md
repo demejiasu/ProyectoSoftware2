@@ -14,27 +14,16 @@ El sistema está compuesto por cinco microservicios independientes que se comuni
 
 ```mermaid
 graph TB
-    subgraph "Clientes Externos"
-        C[Cliente Web/Mobile]
-    end
-    
-    subgraph "API Gateway"
-        GW[API Gateway<br/>Express.js<br/>Puerto 3000]
-    end
-    
-    subgraph "Microservicios"
-        AUTH[Auth Service<br/>Laravel<br/>Puerto 8000]
-        USER[User Service<br/>Django<br/>Puerto 8001]
-        PROD[Product Service<br/>Flask<br/>Puerto 8002]
-        ORDER[Order Service<br/>Express<br/>Puerto 8003]
-        NOTIF[Notification Service<br/>Flask<br/>Puerto 8004]
-    end
-    
-    subgraph "Bases de Datos"
-        MYSQL[(MySQL<br/>auth_db)]
-        POSTGRES[(PostgreSQL<br/>user_db)]
-        MONGO[(MongoDB<br/>product_db)]
-    end
+    C[Cliente Web/Mobile]
+    GW[API Gateway - Express.js - Puerto 3000]
+    AUTH[Auth Service - Node.js - Puerto 8000]
+    USER[User Service - Django - Puerto 8001]
+    PROD[Product Service - Flask - Puerto 8002]
+    ORDER[Order Service - Express - Puerto 8003]
+    NOTIF[Notification Service - Flask - Puerto 8004]
+    MYSQL[(MySQL - auth_db)]
+    POSTGRES[(PostgreSQL - user_db)]
+    MONGO[(MongoDB)]
     
     C -->|HTTP| GW
     GW -->|REST API| AUTH
@@ -42,11 +31,10 @@ graph TB
     GW -->|REST API| PROD
     GW -->|REST API| ORDER
     GW -->|REST API| NOTIF
-    
     AUTH --> MYSQL
     USER --> POSTGRES
     PROD --> MONGO
-```
+    ```
 
 ### Tecnologías Utilizadas
 
@@ -55,7 +43,7 @@ El proyecto utiliza diferentes frameworks y tecnologías según lo solicitado en
 | Componente | Tecnología |
 |------------|------------|
 | API Gateway | Express.js (Node.js) |
-| Auth Service | Laravel (PHP) |
+| Auth Service | Node.js (Express) |
 | User Service | Django (Python) |
 | Product Service | Flask (Python) |
 | Order Service | Express.js (Node.js) |
