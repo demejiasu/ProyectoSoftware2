@@ -29,10 +29,17 @@ services:
     depends_on:
       - mysql
     environment:
+      - APP_KEY=base64:ttRvj4zMUt5Gf764lufHqiorFpNlgJxbjNfEQeWq0Ow=
+      - APP_ENV=local
+      - APP_DEBUG=true
       - DB_HOST=mysql
       - DB_DATABASE=auth_db
       - DB_USERNAME=root
       - DB_PASSWORD=root
+      - SESSION_DRIVER=file
+      - CACHE_DRIVER=file
+      - QUEUE_CONNECTION=sync
+      - APP_URL=http://localhost:8000
 
   mysql:
     image: mysql:8
