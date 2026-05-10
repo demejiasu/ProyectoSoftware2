@@ -465,47 +465,140 @@ Response:
 
 ## Pruebas Unitarias (25 Tests)
 
-El proyecto incluye 25 pruebas unitarias distribuidas en los diferentes microservicios:
+El proyecto incluye 25 pruebas unitarias distribuidas en los diferentes microservicios. A continuacion se indica como ejecutar cada grupo de tests.
 
-### Como ejecutar las pruebas
+### Prerrequisitos para ejecutar los tests
 
-#### Tests de Django (User Service) - 5 tests
+Antes de ejecutar los tests, asegurese de tener instalado lo siguiente:
+
+- Python 3.10+ con pip
+- Node.js 18+
+- Docker Desktop (para tests del API Gateway contra servicios en ejecucion)
+
+### Tests de Django (User Service) - 5 tests
+
+Estos tests verifican las operaciones CRUD de usuarios y la validacion de datos.
+
 ```bash
+# 1. Navegar al directorio del servicio
 cd user-service
+
+# 2. Ejecutar los tests (no requiere instalar dependencias si usa Docker)
+python manage.py test user_service.tests
+
+# Si el comando anterior falla por falta de dependencias, ejecute:
+pip install django psycopg2-binary
 python manage.py test user_service.tests
 ```
 
-#### Tests de Flask (Product Service) - 5 tests
+Lo que prueba:
+- test_1_list_users_returns_json: Verifica que GET /users devuelva un JSON con la clave "users"
+- test_2_create_user_with_valid_data: Verifica que POST /users cree un usuario y devuelva un ID
+- test_3_update_user_returns_success: Verifica que PUT /users/:id actualice correctamente
+- test_4_delete_user_returns_success: Verifica que DELETE /users/:id elimine correctamente
+- test_5_create_user_without_name_fails: Verifica que crear un usuario sin nombre devuelva error 400
+
+### Tests de Flask (Product Service) - 5 tests
+
+Estos tests verifican las operaciones CRUD de productos y la validacion de datos.
+
 ```bash
+# 1. Navegar al directorio del servicio
 cd product-service
+
+# 2. Instalar dependencias (si no se han instalado antes)
+pip install flask pymongo pytest
+
+# 3. Ejecutar los tests
 python -m pytest test_app.py -v
 ```
 
-#### Tests de Flask (Notification Service) - 5 tests
+Lo que prueba:
+- test_1_list_products_returns_json: Verifica que GET /products devuelva una lista
+- test_2_create_product_returns_id: Verifica que POST /products cree un producto
+- test_3_update_product_returns_success: Verifica que PUT /products/:id actualice
+- test_4_delete_product_returns_success: Verifica que DELETE /products/:id elimine
+- test_5_create_product_missing_price_fails: Verifica que crear sin precio falle
+
+### Tests de Flask (Notification Service) - 5 tests
+
+Estos tests verifican las operaciones CRUD de notificaciones y la validacion de datos.
+
 ```bash
+# 1. Navegar al directorio del servicio
 cd notification-service
+
+# 2. Instalar dependencias (si no se han instalado antes)
+pip install flask pytest
+
+# 3. Ejecutar los tests
 python -m pytest test_app.py -v
 ```
 
-#### Tests de Express (API Gateway) - 6 tests
+Lo que prueba:
+- test_1_list_notifications_returns_json: Verifica que GET /notify devuelva datos
+- test_2_create_notification_returns_success: Verifica que POST /notify cree una notificacion
+- test_3_update_notification_returns_success: Verifica que PUT /notify/:id actualice
+- test_4_delete_notification_returns_success: Verifica que DELETE /notify/:id elimine
+- test_5_create_notification_missing_message_fails: Verifica que crear sin mensaje falle
+
+### Tests de Express (API Gateway) - 6 tests
+
+Estos tests verifican el enrutamiento del API Gateway. Requieren que los servicios esten corriendo con Docker.
+
 ```bash
+# 1. Asegurarse de que los servicios esten ejecutandose
+docker compose up -d
+
+# 2. Navegar al directorio del API Gateway
 cd api-gateway
+
+# 3. Instalar dependencias (si no se han instalado antes)
+npm install
+
+# 4. Ejecutar los tests
 node test_gateway.js
 ```
 
-#### Tests de Express (Order Service) - 4 tests
+Lo que prueba:
+- Health check returns ok: Verifica que GET /api/health funcione correctamente
+- GET /users returns JSON: Verifica que se pueda obtener la lista de usuarios
+- GET /products returns JSON list: Verifica que se pueda obtener la lista de productos
+- GET /orders returns JSON: Verifica que se puedan obtener las ordenes
+- Login with valid credentials returns token: Verifica que el login funcione con credenciales validas
+- Login with invalid credentials returns 401: Verifica que el login falle con credenciales incorrectas
+
+### Tests de Express (Order Service) - 4 tests
+
+Estos tests verifican las operaciones CRUD de ordenes. Requieren que los servicios esten corriendo con Docker.
+
 ```bash
+# 1. Asegurarse de que los servicios esten ejecutandose
+docker compose up -d
+
+# 2. Navegar al directorio del Order Service
 cd order-service
+
+# 3. Instalar dependencias (si no se han instalado antes)
+npm install
+
+# 4. Ejecutar los tests
 node test_orders.js
 ```
 
+Lo que prueba:
+- GET /orders returns orders list: Verifica que GET /orders devuelva la lista de ordenes
+- POST /orders creates a new order: Verifica que POST /orders cree una nueva orden
+- PUT /orders/:id updates an order: Verifica que PUT /orders/:id actualice una orden
+- DELETE /orders/:id deletes an order: Verifica que DELETE /orders/:id elimine una orden
+
 ### Resumen de tests
 
-| Servicio | Framework | Tests | Lo que prueba |
-|----------|-----------|-------|---------------|
-| User Service | Django | 5 | Listar, crear, actualizar, eliminar usuarios y validacion |
-| Product Service | Flask | 5 | Listar, crear, actualizar, eliminar productos y validacion |
-| Notification Service | Flask | 5 | Listar, crear, actualizar, eliminar notificaciones y validacion |
+| Servicio | Framework | Cantidad de tests | Lo que prueba |
+|----------|-----------|-------------------|---------------|
+| User Service | Django | 5 | Listar, crear, actualizar, eliminar usuarios y validacion de datos |
+| Product Service | Flask | 5 | Listar, crear, actualizar, eliminar productos y validacion de datos |
+| Notification Service | Flask | 5 | Listar, crear, actualizar, eliminar notificaciones y validacion de datos |
 | API Gateway | Express | 6 | Health check, listar usuarios, productos y ordenes, login exitoso y login fallido |
 | Order Service | Express | 4 | Listar, crear, actualizar, eliminar ordenes |
 | Total | - | 25 | Supera el minimo requerido de 15 |
