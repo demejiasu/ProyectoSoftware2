@@ -1,77 +1,79 @@
-# Sistema de Microservicios - Ingeniería de Software II
+# Sistema de Microservicios - Ingenieria de Software II
 
 ## Autor
 
 Estudiante: 1053863699
 
-## Descripción del Proyecto
+## Descripcion del Proyecto
 
-Este proyecto consiste en el desarrollo de un sistema basado en **arquitectura de microservicios** que implementa funcionalidades básicas de un e-commerce, incluyendo gestión de usuarios, productos, órdenes y notificaciones. Todas las peticiones externas pasan obligatoriamente por un **API Gateway** centralizado, lo que garantiza un punto único de entrada y control sobre el tráfico hacia los diferentes servicios.
+Este proyecto consiste en el desarrollo de un sistema basado en arquitectura de microservicios que implementa funcionalidades basicas de un e-commerce, incluyendo gestion de usuarios, productos, ordenes y notificaciones. Todas las peticiones externas pasan obligatoriamente por un API Gateway centralizado, lo que garantiza un punto unico de entrada y control sobre el trafico hacia los diferentes servicios.
 
 ---
 
 ## Arquitectura del Sistema
 
-El sistema está compuesto por **cinco microservicios independientes** que se comunican entre sí a través de APIs REST. A continuación se presenta el diagrama de la arquitectura general:
+El sistema esta compuesto por cinco microservicios independientes que se comunican entre si a traves de APIs REST. A continuacion se presenta el diagrama de la arquitectura general:
 
 ![Arquitectura del Sistema](diagrama.png)
 
-### Tecnologías Utilizadas
+### Tecnologias Utilizadas
 
-| Componente | Tecnología | Framework | Base de Datos |
+| Componente | Tecnologia | Framework | Base de Datos |
 |------------|------------|-----------|---------------|
-| **API Gateway** | Node.js | Express.js | - |
-| **Auth Service** | PHP 8.4 | Laravel 12 | MySQL 8 |
-| **User Service** | Python 3.10 | Django 5.2 | PostgreSQL 15 |
-| **Product Service** | Python 3.10 | Flask 3.1 | MongoDB 6 |
-| **Order Service** | Node.js 18 | Express.js | (en memoria) |
-| **Notification Service** | Python 3.10 | Flask 3.1 | (en memoria) |
-| **Frontend Web** | HTML/CSS/JS | - | - |
+| API Gateway | Node.js | Express.js | - |
+| Auth Service | PHP 8.4 | Laravel 12 | MySQL 8 |
+| User Service | Python 3.10 | Django 5.2 | PostgreSQL 15 |
+| Product Service | Python 3.10 | Flask 3.1 | MongoDB 6 |
+| Order Service | Node.js 18 | Express.js | en memoria |
+| Notification Service | Python 3.10 | Flask 3.1 | en memoria |
+| Frontend Web | HTML/CSS/JS | - | - |
 
 ### Frameworks utilizados (obligatorios)
-- ✅ **Laravel** (PHP) → Auth Service
-- ✅ **Django** (Python) → User Service
-- ✅ **Flask** (Python) → Product Service, Notification Service
-- ✅ **Express** (Node.js) → API Gateway, Order Service
+
+- Laravel (PHP) para Auth Service
+- Django (Python) para User Service
+- Flask (Python) para Product Service y Notification Service
+- Express (Node.js) para API Gateway y Order Service
 
 ### Bases de datos utilizadas (obligatorias)
-- ✅ **MySQL 8** → Auth Service
-- ✅ **PostgreSQL 15** → User Service
-- ✅ **MongoDB 6** → Product Service
+
+- MySQL 8 para Auth Service
+- PostgreSQL 15 para User Service
+- MongoDB 6 para Product Service
 
 ---
 
 ## Frontend Web
 
-El sistema incluye una **interfaz web completa** servida por el API Gateway en `http://localhost:3000`.
+El sistema incluye una interfaz web completa servida por el API Gateway en http://localhost:3000.
 
-### Funcionalidades públicas (sin login)
-| Sección | Descripción |
-|---------|-------------|
-| 🏠 **Inicio** | Hero con bienvenida y productos destacados |
-| 📦 **Productos** | Catálogo completo con buscador y filtro por categorías |
-| 🔐 **Iniciar Sesión** | Modal de login con "¿Olvidaste tu contraseña?" |
-| 📝 **Registrarse** | Modal de registro de nuevos usuarios |
+### Funcionalidades publicas (sin login)
+
+- Inicio con hero de bienvenida y productos destacados
+- Catalogo de productos completo con buscador y filtro por categorias
+- Modal de inicio de sesion con enlace a recuperacion de contrasena
+- Modal de registro para nuevos usuarios
 
 ### Funcionalidades privadas (con login)
 
-| Sección | Admin | Usuario normal |
+| Seccion | Admin | Usuario normal |
 |---------|-------|----------------|
-| 📊 **Dashboard** | Estadísticas + estado de servicios | Estadísticas + estado de servicios |
-| 👥 **Usuarios** | CRUD completo | ❌ Bloqueado - "Solo administradores" |
-| 📦 **Productos** | CRUD completo (crear, editar, eliminar) | Solo lectura |
-| 📋 **Órdenes** | CRUD completo | CRUD completo |
-| 🔔 **Notificaciones** | CRUD completo | CRUD completo |
-| 🏪 **Ver Tienda** | Volver a la vista pública | Volver a la vista pública |
+| Dashboard | Estadisticas y estado de servicios | Estadisticas y estado de servicios |
+| Usuarios | CRUD completo | Bloqueado - Solo administradores |
+| Productos | CRUD completo (crear, editar, eliminar) | Solo lectura |
+| Ordenes | CRUD completo | CRUD completo |
+| Notificaciones | CRUD completo | CRUD completo |
+| Ver Tienda | Volver a la vista publica | Volver a la vista publica |
 
 ### Credenciales de prueba
 
-| Rol | Email | Contraseña |
+| Rol | Email | Contrasena |
 |-----|-------|------------|
-| **Administrador** | admin@test.com | admin123 |
-| **Usuario normal** | user@test.com | user123 |
+| Administrador | admin@test.com | admin123 |
+| Usuario normal | user@test.com | user123 |
 
 ---
+
 ## Instrucciones de Despliegue
 
 ### Prerrequisitos
@@ -93,7 +95,7 @@ cd ProyectoSoftware2
 docker compose up --build -d
 ```
 
-3. Verifique que todos los servicios estén corriendo:
+3. Verifique que todos los servicios esten corriendo:
 ```bash
 docker compose ps
 ```
@@ -108,29 +110,30 @@ http://localhost:3000
 | Servicio | Puerto Interno | Puerto Externo |
 |----------|---------------|----------------|
 | API Gateway | 3000 | 3000 |
-| Auth Service | 8000 | - (solo interno) |
-| User Service | 8001 | - (solo interno) |
-| Product Service | 8002 | - (solo interno) |
-| Order Service | 8003 | - (solo interno) |
-| Notification Service | 8004 | - (solo interno) |
+| Auth Service | 8000 | solo interno |
+| User Service | 8001 | solo interno |
+| Product Service | 8002 | solo interno |
+| Order Service | 8003 | solo interno |
+| Notification Service | 8004 | solo interno |
 | MySQL | 3306 | 3307 |
 | PostgreSQL | 5432 | 5432 |
 | MongoDB | 27017 | 27017 |
 
-> **Nota:** Solo el API Gateway (puerto 3000) está expuesto al exterior. Los microservicios se comunican internamente a través de la red de Docker.
+Nota: Solo el API Gateway (puerto 3000) esta expuesto al exterior. Los microservicios se comunican internamente a traves de la red de Docker.
 
 ---
 
-## Documentación de Endpoints
+## Documentacion de Endpoints
 
-Todas las peticiones deben realizarse a través del **API Gateway** (`http://localhost:3000`).
+Todas las peticiones deben realizarse a traves del API Gateway (http://localhost:3000).
 
-### Autenticación
+### Autenticacion
 
 #### POST /auth/login
-Inicia sesión con credenciales del usuario.
 
-**Request:**
+Inicia sesion con credenciales del usuario.
+
+Request:
 ```json
 {
   "email": "admin@test.com",
@@ -138,7 +141,7 @@ Inicia sesión con credenciales del usuario.
 }
 ```
 
-**Response (200):**
+Response (200):
 ```json
 {
   "success": true,
@@ -151,7 +154,7 @@ Inicia sesión con credenciales del usuario.
 }
 ```
 
-**Ejemplo:**
+Ejemplo:
 ```bash
 curl -X POST http://localhost:3000/auth/login \
   -H "Content-Type: application/json" \
@@ -159,9 +162,10 @@ curl -X POST http://localhost:3000/auth/login \
 ```
 
 #### POST /auth/register
+
 Registra un nuevo usuario en el sistema.
 
-**Request:**
+Request:
 ```json
 {
   "name": "Nuevo Usuario",
@@ -170,7 +174,7 @@ Registra un nuevo usuario en el sistema.
 }
 ```
 
-**Response (200):**
+Response (200):
 ```json
 {
   "success": true,
@@ -179,16 +183,17 @@ Registra un nuevo usuario en el sistema.
 ```
 
 #### POST /auth/logout
-Cierra la sesión del usuario.
 
-**Request:**
+Cierra la sesion del usuario.
+
+Request:
 ```json
 {
   "token": "token-de-sesion"
 }
 ```
 
-**Response (200):**
+Response (200):
 ```json
 {
   "message": "logout ok"
@@ -196,16 +201,17 @@ Cierra la sesión del usuario.
 ```
 
 #### POST /auth/recover
-Inicia el proceso de recuperación de contraseña.
 
-**Request:**
+Inicia el proceso de recuperacion de contrasena.
+
+Request:
 ```json
 {
   "email": "usuario@test.com"
 }
 ```
 
-**Response (200):**
+Response (200):
 ```json
 {
   "message": "recover ok"
@@ -213,11 +219,12 @@ Inicia el proceso de recuperación de contraseña.
 ```
 
 #### GET /auth/verify
-Verifica si un token de sesión es válido.
 
-**Headers:** `Authorization: Bearer <token>`
+Verifica si un token de sesion es valido.
 
-**Response (200):**
+Headers: Authorization: Bearer <token>
+
+Response (200):
 ```json
 {
   "valid": true,
@@ -235,19 +242,20 @@ Verifica si un token de sesión es válido.
 ### Usuarios (User Service - Django)
 
 #### GET /users
+
 Obtiene la lista de usuarios registrados.
 
 ```bash
 curl http://localhost:3000/users
 ```
 
-**Response:**
+Response:
 ```json
 {
   "users": [
     {
       "id": 1,
-      "name": "Juan Pérez",
+      "name": "Juan Perez",
       "email": "juan@test.com",
       "role": "user",
       "status": "active"
@@ -257,6 +265,7 @@ curl http://localhost:3000/users
 ```
 
 #### POST /users
+
 Crea un nuevo usuario.
 
 ```bash
@@ -266,6 +275,7 @@ curl -X POST http://localhost:3000/users \
 ```
 
 #### PUT /users/:id
+
 Actualiza un usuario existente.
 
 ```bash
@@ -275,6 +285,7 @@ curl -X PUT http://localhost:3000/users/1 \
 ```
 
 #### DELETE /users/:id
+
 Elimina un usuario.
 
 ```bash
@@ -286,13 +297,14 @@ curl -X DELETE http://localhost:3000/users/1
 ### Productos (Product Service - Flask + MongoDB)
 
 #### GET /products
-Obtiene el catálogo de productos.
+
+Obtiene el catalogo de productos.
 
 ```bash
 curl http://localhost:3000/products
 ```
 
-**Response:**
+Response:
 ```json
 [
   {
@@ -306,6 +318,7 @@ curl http://localhost:3000/products
 ```
 
 #### POST /products
+
 Crea un nuevo producto.
 
 ```bash
@@ -315,6 +328,7 @@ curl -X POST http://localhost:3000/products \
 ```
 
 #### PUT /products/:id
+
 Actualiza un producto.
 
 ```bash
@@ -324,6 +338,7 @@ curl -X PUT http://localhost:3000/products/<id> \
 ```
 
 #### DELETE /products/:id
+
 Elimina un producto.
 
 ```bash
@@ -332,16 +347,17 @@ curl -X DELETE http://localhost:3000/products/<id>
 
 ---
 
-### Órdenes (Order Service - Express)
+### Ordenes (Order Service - Express)
 
 #### GET /orders
-Obtiene la lista de órdenes.
+
+Obtiene la lista de ordenes.
 
 ```bash
 curl http://localhost:3000/orders
 ```
 
-**Response:**
+Response:
 ```json
 {
   "orders": [
@@ -358,6 +374,7 @@ curl http://localhost:3000/orders
 ```
 
 #### POST /orders
+
 Crea una nueva orden.
 
 ```bash
@@ -367,7 +384,8 @@ curl -X POST http://localhost:3000/orders \
 ```
 
 #### PUT /orders/:id
-Actualiza una orden (ej: cambiar estado).
+
+Actualiza una orden (ejemplo: cambiar estado).
 
 ```bash
 curl -X PUT http://localhost:3000/orders/1 \
@@ -376,6 +394,7 @@ curl -X PUT http://localhost:3000/orders/1 \
 ```
 
 #### DELETE /orders/:id
+
 Elimina una orden.
 
 ```bash
@@ -387,6 +406,7 @@ curl -X DELETE http://localhost:3000/orders/1
 ### Notificaciones (Notification Service - Flask)
 
 #### GET /notify
+
 Obtiene todas las notificaciones.
 
 ```bash
@@ -394,7 +414,8 @@ curl http://localhost:3000/notify
 ```
 
 #### POST /notify
-Crea una nueva notificación.
+
+Crea una nueva notificacion.
 
 ```bash
 curl -X POST http://localhost:3000/notify \
@@ -403,7 +424,8 @@ curl -X POST http://localhost:3000/notify \
 ```
 
 #### PUT /notify/:id
-Actualiza una notificación.
+
+Actualiza una notificacion.
 
 ```bash
 curl -X PUT http://localhost:3000/notify/1 \
@@ -412,7 +434,8 @@ curl -X PUT http://localhost:3000/notify/1 \
 ```
 
 #### DELETE /notify/:id
-Elimina una notificación.
+
+Elimina una notificacion.
 
 ```bash
 curl -X DELETE http://localhost:3000/notify/1
@@ -423,13 +446,14 @@ curl -X DELETE http://localhost:3000/notify/1
 ### Health Check
 
 #### GET /api/health
-Verifica que el API Gateway esté funcionando.
+
+Verifica que el API Gateway este funcionando.
 
 ```bash
 curl http://localhost:3000/api/health
 ```
 
-**Response:**
+Response:
 ```json
 {
   "status": "ok",
@@ -439,11 +463,11 @@ curl http://localhost:3000/api/health
 
 ---
 
-## Pruebas Unitarias (15 Tests)
+## Pruebas Unitarias (25 Tests)
 
-El proyecto incluye **25 pruebas unitarias** distribuidas en los diferentes microservicios:
+El proyecto incluye 25 pruebas unitarias distribuidas en los diferentes microservicios:
 
-### Cómo ejecutar las pruebas
+### Como ejecutar las pruebas
 
 #### Tests de Django (User Service) - 5 tests
 ```bash
@@ -479,56 +503,56 @@ node test_orders.js
 
 | Servicio | Framework | Tests | Lo que prueba |
 |----------|-----------|-------|---------------|
-| **User Service** | Django | 5 | Listar, crear, actualizar, eliminar usuarios + validación |
-| **Product Service** | Flask | 5 | Listar, crear, actualizar, eliminar productos + validación |
-| **Notification Service** | Flask | 5 | Listar, crear, actualizar, eliminar notificaciones + validación |
-| **API Gateway** | Express | 6 | Health check, listar usuarios/productos/órdenes, login exitoso, login fallido |
-| **Order Service** | Express | 4 | Listar, crear, actualizar, eliminar órdenes |
-| **Total** | - | **25** | Supera el mínimo requerido de 15 |
+| User Service | Django | 5 | Listar, crear, actualizar, eliminar usuarios y validacion |
+| Product Service | Flask | 5 | Listar, crear, actualizar, eliminar productos y validacion |
+| Notification Service | Flask | 5 | Listar, crear, actualizar, eliminar notificaciones y validacion |
+| API Gateway | Express | 6 | Health check, listar usuarios, productos y ordenes, login exitoso y login fallido |
+| Order Service | Express | 4 | Listar, crear, actualizar, eliminar ordenes |
+| Total | - | 25 | Supera el minimo requerido de 15 |
 
 ---
 
 ## Pruebas de Rendimiento (Locust)
 
-El proyecto incluye **10 pruebas de estrés** implementadas con Locust sobre diferentes endpoints del sistema.
+El proyecto incluye 10 pruebas de estres implementadas con Locust sobre diferentes endpoints del sistema.
 
-### Instalación
+### Instalacion
 ```bash
 pip install locust
 ```
 
-### Ejecución con interfaz web
+### Ejecucion con interfaz web
 ```bash
 locust -f locustfile.py --host=http://localhost:3000
-# Abrir http://localhost:8089
 ```
+Luego abrir http://localhost:8089 en el navegador.
 
-### Ejecución headless (sin interfaz)
+### Ejecucion headless (sin interfaz)
 ```bash
-# Prueba de Capacidad: 100 usuarios, 10/s, 5min
+# Prueba de Capacidad: 100 usuarios, 10 por segundo, 5 minutos
 locust -f locustfile.py --host=http://localhost:3000 --headless -u 100 -r 10 -t 5m
 
-# Prueba de Carga: 50 usuarios, 5/s, 10min
+# Prueba de Carga: 50 usuarios, 5 por segundo, 10 minutos
 locust -f locustfile.py --host=http://localhost:3000 --headless -u 50 -r 5 -t 10m
 
-# Prueba de Estrés: 200 usuarios, 20/s, 3min
+# Prueba de Estres: 200 usuarios, 20 por segundo, 3 minutos
 locust -f locustfile.py --host=http://localhost:3000 --headless -u 200 -r 20 -t 3m
 ```
 
-### Endpoints probados (10 pruebas de estrés)
+### Endpoints probados (10 pruebas de estres)
 
-| # | Endpoint | Método | Descripción |
-|---|----------|--------|-------------|
-| 1 | /auth/login | POST | Autenticación de usuarios |
-| 2 | /auth/logout | POST | Cierre de sesión |
-| 3 | /auth/recover | POST | Recuperación de contraseña |
+| Numero | Endpoint | Metodo | Descripcion |
+|--------|----------|--------|-------------|
+| 1 | /auth/login | POST | Autenticacion de usuarios |
+| 2 | /auth/logout | POST | Cierre de sesion |
+| 3 | /auth/recover | POST | Recuperacion de contrasena |
 | 4 | /auth/register | POST | Registro de nuevos usuarios |
 | 5 | /users | GET | Listado de usuarios |
 | 6 | /products | GET | Listado de productos |
-| 7 | /orders | GET | Listado de órdenes |
+| 7 | /orders | GET | Listado de ordenes |
 | 8 | /notify | GET | Listado de notificaciones |
 | 9 | /api/health | GET | Health check del gateway |
-| 10 | /products | POST | Creación de productos |
+| 10 | /products | POST | Creacion de productos |
 
 ---
 
@@ -536,12 +560,12 @@ locust -f locustfile.py --host=http://localhost:3000 --headless -u 200 -r 20 -t 
 
 El API Gateway implementa las siguientes medidas de seguridad:
 
-1. **Autenticación mediante tokens**: Todos los endpoints del dashboard requieren un token JWT (codificado en base64) válido.
-2. **Verificación de expiración de tokens**: Los tokens expiran después de 24 horas.
-3. **Control de acceso por roles**: Los usuarios normales no pueden acceder a la gestión de usuarios ni crear/editar/eliminar productos.
-4. **Validación de datos**: Cada microservicio implementa su propia validación de datos de entrada.
-5. **CORS**: El API Gateway configura CORS para permitir peticiones desde cualquier origen.
-6. **Aislamiento de red Docker**: Los microservicios no están expuestos al exterior, solo se comunican internamente.
+1. Autenticacion mediante tokens: Todos los endpoints del dashboard requieren un token JWT (codificado en base64) valido.
+2. Verificacion de expiracion de tokens: Los tokens expiran despues de 24 horas.
+3. Control de acceso por roles: Los usuarios normales no pueden acceder a la gestion de usuarios ni crear, editar o eliminar productos.
+4. Validacion de datos: Cada microservicio implementa su propia validacion de datos de entrada.
+5. CORS: El API Gateway configura CORS para permitir peticiones desde cualquier origen.
+6. Aislamiento de red Docker: Los microservicios no estan expuestos al exterior, solo se comunican internamente.
 
 ---
 
@@ -549,47 +573,47 @@ El API Gateway implementa las siguientes medidas de seguridad:
 
 ```
 ProyectoSoftware2/
-├── docker-compose.yml          # Orquestación de contenedores
-├── locustfile.py               # Pruebas de rendimiento (10 tests de estrés)
-├── README.md                   # Documentación completa
-├── diagrama.png                # Diagrama de arquitectura
-├── api-gateway/                # Express.js - API Gateway + Frontend
-│   ├── index.js                # Enrutamiento de peticiones
-│   ├── Dockerfile              # Configuración Docker
-│   ├── package.json            # Dependencias
-│   ├── public/
-│   │   └── index.html          # Frontend web completo
-│   └── test_gateway.js         # 6 tests unitarios
-├── auth-service/               # Laravel - Autenticación
-│   ├── app/
-│   ├── routes/
-│   │   └── web.php             # Endpoints de auth
-│   └── Dockerfile
-├── user-service/               # Django - Gestión de usuarios
-│   ├── user_service/
-│   │   ├── views.py            # CRUD de usuarios
-│   │   ├── urls.py             # Rutas
-│   │   └── tests.py            # 5 tests unitarios
-│   ├── manage.py
-│   └── Dockerfile
-├── product-service/            # Flask + MongoDB - Productos
-│   ├── app.py                  # CRUD de productos
-│   ├── Dockerfile
-│   └── test_app.py             # 5 tests unitarios
-├── order-service/              # Express.js - Órdenes
-│   ├── index.js                # CRUD de órdenes
-│   ├── package.json
-│   ├── Dockerfile
-│   └── test_orders.js          # 4 tests unitarios
-└── notification-service/       # Flask - Notificaciones
-    ├── app.py                  # CRUD de notificaciones
-    ├── Dockerfile
-    └── test_app.py             # 5 tests unitarios
+|-- docker-compose.yml              # Orquestacion de contenedores
+|-- locustfile.py                   # Pruebas de rendimiento (10 tests de estres)
+|-- README.md                       # Documentacion completa
+|-- diagrama.png                    # Diagrama de arquitectura
+|-- api-gateway/                    # Express.js - API Gateway + Frontend
+|   |-- index.js                    # Enrutamiento de peticiones
+|   |-- Dockerfile                  # Configuracion Docker
+|   |-- package.json                # Dependencias
+|   |-- public/
+|   |   |-- index.html              # Frontend web completo
+|   |-- test_gateway.js             # 6 tests unitarios
+|-- auth-service/                   # Laravel - Autenticacion
+|   |-- app/
+|   |-- routes/
+|   |   |-- web.php                 # Endpoints de auth
+|   |-- Dockerfile
+|-- user-service/                   # Django - Gestion de usuarios
+|   |-- user_service/
+|   |   |-- views.py                # CRUD de usuarios
+|   |   |-- urls.py                 # Rutas
+|   |   |-- tests.py                # 5 tests unitarios
+|   |-- manage.py
+|   |-- Dockerfile
+|-- product-service/                # Flask + MongoDB - Productos
+|   |-- app.py                      # CRUD de productos
+|   |-- Dockerfile
+|   |-- test_app.py                 # 5 tests unitarios
+|-- order-service/                  # Express.js - Ordenes
+|   |-- index.js                    # CRUD de ordenes
+|   |-- package.json
+|   |-- Dockerfile
+|   |-- test_orders.js              # 4 tests unitarios
+|-- notification-service/           # Flask - Notificaciones
+    |-- app.py                      # CRUD de notificaciones
+    |-- Dockerfile
+    |-- test_app.py                 # 5 tests unitarios
 ```
 
 ---
 
-## Comandos Útiles
+## Comandos Utiles
 
 ### Docker
 ```bash
@@ -602,25 +626,27 @@ docker compose logs -f
 # Detener servicios
 docker compose down
 
-# Reconstruir un servicio específico
+# Reconstruir un servicio especifico
 docker compose up -d --build api-gateway
 
 # Ver estado de los servicios
 docker compose ps
 
-# Ver logs de un servicio específico
+# Ver logs de un servicio especifico
 docker compose logs api-gateway
 ```
 
 ### Testing
 ```bash
-# Ejecutar todos los tests (desde dentro de cada servicio)
+# Ejecutar todos los tests
 python manage.py test user_service.tests    # Django
 python -m pytest product-service/test_app.py # Flask
+python -m pytest notification-service/test_app.py # Flask
 node api-gateway/test_gateway.js             # Express
+node order-service/test_orders.js            # Express
 ```
 
-### Pruebas de estrés
+### Pruebas de estres
 ```bash
 locust -f locustfile.py --host=http://localhost:3000 --headless -u 200 -r 20 -t 3m
 ```
@@ -631,25 +657,25 @@ locust -f locustfile.py --host=http://localhost:3000 --headless -u 200 -r 20 -t 
 
 | Requisito | Estado |
 |-----------|--------|
-| Mínimo 5 microservicios | ✅ 6 servicios (Gateway + 5 micros) |
-| API Gateway como único punto de entrada | ✅ Puerto 3000 |
-| Validación de datos en cada microservicio | ✅ Cada servicio valida sus datos |
-| Frameworks: Laravel, Django, Flask, Express | ✅ Todos implementados |
-| Bases de datos: MySQL, PostgreSQL, MongoDB | ✅ Las 3 implementadas |
-| Autenticación: Login, Logout, Recuperación | ✅ Los 3 implementados |
-| Frontend web con roles | ✅ Admin y User con permisos diferenciados |
-| Pruebas unitarias (mínimo 15) | ✅ 25 tests implementados |
-| Pruebas de rendimiento (capacidad, carga, estrés) | ✅ 10 endpoints probados |
-| Pruebas de seguridad básicas | ✅ Tokens, roles, validación, CORS |
-| Contenerización Docker | ✅ Todos los servicios contenerizados |
-| Orquestación Docker Compose | ✅ Configuración completa |
-| Diagrama de arquitectura | ✅ diagrama.png |
-| Documentación de endpoints | ✅ README completo |
-| README con instrucciones de despliegue | ✅ Documentación detallada |
-| Repositorio GitHub público | ✅ |
+| Minimo 5 microservicios | 6 servicios (Gateway + 5 micros) |
+| API Gateway como unico punto de entrada | Puerto 3000 |
+| Validacion de datos en cada microservicio | Cada servicio valida sus datos |
+| Frameworks: Laravel, Django, Flask, Express | Todos implementados |
+| Bases de datos: MySQL, PostgreSQL, MongoDB | Las 3 implementadas |
+| Autenticacion: Login, Logout, Recuperacion | Los 3 implementados |
+| Frontend web con roles | Admin y User con permisos diferenciados |
+| Pruebas unitarias (minimo 15) | 25 tests implementados |
+| Pruebas de rendimiento (capacidad, carga, estres) | 10 endpoints probados |
+| Pruebas de seguridad basicas | Tokens, roles, validacion, CORS |
+| Contenerizacion Docker | Todos los servicios contenerizados |
+| Orquestacion Docker Compose | Configuracion completa |
+| Diagrama de arquitectura | diagrama.png |
+| Documentacion de endpoints | README completo |
+| README con instrucciones de despliegue | Documentacion detallada |
+| Repositorio GitHub publico | Subido correctamente |
 
 ---
 
 ## Licencia
 
-Este proyecto es de uso académico para la materia de **Ingeniería de Software II**.
+Este proyecto es de uso academico para la materia de Ingenieria de Software II.
