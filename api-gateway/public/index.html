@@ -227,6 +227,7 @@
             <input type="password" id="loginPassword" placeholder="Contraseña" onkeydown="if(event.key==='Enter')login()">
             <button class="btn-primary" onclick="login()">Iniciar Sesión</button>
             <div class="error" id="loginError"></div>
+            <div class="link" onclick="closeLoginModal();openRecoverModal()">🔑 ¿Olvidaste tu contraseña?</div>
             <div class="link" onclick="closeLoginModal();openRegisterModal()">¿No tienes cuenta? Regístrate</div>
             <div class="login-info">
                 <strong>Admin:</strong> admin@test.com / admin123<br>
@@ -304,7 +305,7 @@
                 <div class="table-container"><table><thead><tr><th>ID</th><th>Nombre</th><th>Email</th><th>Rol</th><th>Estado</th><th>Acciones</th></tr></thead><tbody id="dashUsersBody"></tbody></table></div>
             </div>
             <div class="section" id="dpanel-products">
-                <div class="panel-header"><h3>📦 Gestión de Productos</h3><button class="btn btn-primary" onclick="openDashModal('product')">+ Nuevo</button></div>
+                <div class="panel-header"><h3>📦 Gestión de Productos</h3><button class="btn btn-primary" onclick="openDashModal('product')" id="btnNewProduct">+ Nuevo</button></div>
                 <div class="table-container"><table><thead><tr><th>ID</th><th>Nombre</th><th>Precio</th><th>Stock</th><th>Categoría</th><th>Acciones</th></tr></thead><tbody id="dashProductsBody"></tbody></table></div>
             </div>
             <div class="section" id="dpanel-orders">
@@ -459,6 +460,25 @@
             }).catch(() => document.getElementById('registerError').textContent = 'Error de conexión');
         }
 
+        // ===== RECUPERAR CONTRASEÑA =====
+        function openRecoverModal() { document.getElementById('recoverModal').classList.add('active'); document.getElementById('recoverError').textContent = ''; }
+        function closeRecoverModal() { document.getElementById('recoverModal').classList.remove('active'); }
+
+        function recoverPassword() {
+            const email = document.getElementById('recoverEmail').value;
+            if (!email) {
+                document.getElementById('recoverError').textContent = 'Ingresa tu correo electrónico';
+                return;
+            }
+            // En un sistema real, aquí se conectaría con un servicio de recuperación
+            // Por ahora simulamos el envío
+            showToast('✅ Se han enviado instrucciones de recuperación a ' + email, 'success');
+            document.getElementById('recoverEmail').value = '';
+            closeRecoverModal();
+            openLoginModal();
+            document.getElementById('loginEmail').value = email;
+        }
+
         // ===== LOGOUT =====
         function logout() {
             localStorage.removeItem('token');
@@ -543,10 +563,12 @@
             fetch(API + '/products').then(r => r.json()).then(data => {
                 const products = Array.isArray(data) ? data : [];
                 document.getElementById('dStatProducts').textContent = products.length;
+                const isAdmin = currentUser.role === 'admin';
+                document.getElementById('btnNewProduct').style.display = isAdmin ? 'inline-block' : 'none';
                 document.getElementById('dashProductsBody').innerHTML = products.map(p => `
                     <tr><td>${(p._id||p.id||'').toString().substring(0,8)}</td><td>${p.name||''}</td>
                     <td>$${p.price||0}</td><td>${p.stock||0}</td><td>${p.category||'general'}</td>
-                    <td class="actions"><button class="btn-sm btn-warning" onclick="editDashItem('product','${p._id||p.id}')">✏️</button><button class="btn-sm btn-danger" onclick="deleteDashItem('product','${p._id||p.id}')">🗑️</button></td></tr>
+                    <td class="actions">${isAdmin ? '<button class="btn-sm btn-warning" onclick="editDashItem(\'product\',\''+(p._id||p.id)+'\')">✏️</button><button class="btn-sm btn-danger" onclick="deleteDashItem(\'product\',\''+(p._id||p.id)+'\')">🗑️</button>' : '<span style="color:#999;font-size:12px;">Solo lectura</span>'}</td></tr>
                 `).join('');
             });
             // Orders
