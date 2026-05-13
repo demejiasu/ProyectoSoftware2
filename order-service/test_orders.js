@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const API_URL = process.env.API_URL || 'http://localhost:3000';
+const API_URL = process.env.API_URL || 'http://api-gateway:3000';
 
 async function runTests() {
     let passed = 0;

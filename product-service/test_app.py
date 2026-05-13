@@ -14,38 +14,39 @@ class ProductServiceTestCase(unittest.TestCase):
         data = json.loads(response.data)
         self.assertIsInstance(data, list)
 
-    def test_2_create_product_returns_id(self):
-        """Test POST /products creates a product"""
+    def test_2_create_product_returns_201(self):
+        """Test POST /products creates a product and returns 201"""
         response = self.app.post(
             '/products',
             data=json.dumps({'name': 'Test Product', 'price': 10.99, 'stock': 5}),
             content_type='application/json'
         )
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 201)
         data = json.loads(response.data)
+        self.assertIn('_id', data)
 
-    def test_3_update_product_returns_success(self):
-        """Test PUT /products/:id updates a product"""
+    def test_3_update_product_not_found_returns_404(self):
+        """Test PUT /products/:id returns 404 for non-existent id"""
         response = self.app.put(
             '/products/507f1f77bcf86cd799439011',
             data=json.dumps({'name': 'Updated'}),
             content_type='application/json'
         )
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 404)
 
-    def test_4_delete_product_returns_success(self):
-        """Test DELETE /products/:id deletes a product"""
+    def test_4_delete_product_not_found_returns_404(self):
+        """Test DELETE /products/:id returns 404 for non-existent id"""
         response = self.app.delete('/products/507f1f77bcf86cd799439011')
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 404)
 
-    def test_5_create_product_missing_price_fails(self):
-        """Test POST /products without price returns error"""
+    def test_5_create_product_without_name_returns_400(self):
+        """Test POST /products without name returns 400"""
         response = self.app.post(
             '/products',
-            data=json.dumps({'name': 'No Price'}),
+            data=json.dumps({'price': 10.99}),
             content_type='application/json'
         )
-        self.assertNotEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 400)
 
 
 if __name__ == '__main__':

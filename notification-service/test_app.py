@@ -12,14 +12,14 @@ class NotificationServiceTestCase(unittest.TestCase):
         response = self.app.get('/notify')
         self.assertEqual(response.status_code, 200)
 
-    def test_2_create_notification_returns_success(self):
-        """Test POST /notify creates a notification"""
+    def test_2_create_notification_returns_201(self):
+        """Test POST /notify creates a notification and returns 201"""
         response = self.app.post(
             '/notify',
             data=json.dumps({'message': 'Test notification', 'type': 'info'}),
             content_type='application/json'
         )
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 201)
 
     def test_3_update_notification_returns_success(self):
         """Test PUT /notify/:id updates a notification"""

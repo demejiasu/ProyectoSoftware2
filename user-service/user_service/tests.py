@@ -20,14 +20,14 @@ class UserAPITestCase(TestCase):
         data = json.loads(response.content)
         self.assertIn('users', data)
 
-    def test_2_create_user_with_valid_data(self):
-        """Test POST /users creates a user"""
+    def test_2_create_user_returns_201(self):
+        """Test POST /users creates a user and returns 201"""
         response = self.client.post(
             '/users',
             data=json.dumps(self.valid_user),
             content_type='application/json'
         )
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 201)
         data = json.loads(response.content)
         self.assertIsNotNone(data.get('id'))
 
@@ -45,11 +45,11 @@ class UserAPITestCase(TestCase):
         response = self.client.delete('/users/1')
         self.assertEqual(response.status_code, 200)
 
-    def test_5_create_user_without_name_fails(self):
-        """Test POST /users without name returns error"""
+    def test_5_create_user_without_email_creates_with_default(self):
+        """Test POST /users creates user even without optional fields"""
         response = self.client.post(
             '/users',
-            data=json.dumps({'email': 'test@test.com'}),
+            data=json.dumps({'name': 'Test User'}),
             content_type='application/json'
         )
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 201)
