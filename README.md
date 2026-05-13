@@ -469,95 +469,67 @@ El proyecto incluye 25 pruebas unitarias distribuidas en los diferentes microser
 
 ### Prerrequisitos para ejecutar los tests
 
-Antes de ejecutar los tests, asegurese de tener instalado lo siguiente:
+Antes de ejecutar los tests, asegurese de tener los servicios de Docker ejecutandose:
 
-- Python 3.10+ con pip
-- Node.js 18+
-- Docker Desktop (para tests del API Gateway contra servicios en ejecucion)
+```bash
+docker compose up -d
+```
+
+Todos los tests se ejecutan dentro de los contenedores Docker usando `docker compose exec`.
 
 ### Tests de Django (User Service) - 5 tests
 
-Estos tests verifican las operaciones CRUD de usuarios y la validacion de datos.
+Ejecutar los tests directamente dentro del contenedor:
 
 ```bash
-# 1. Navegar al directorio del servicio
-cd user-service
-
-# 2. Ejecutar los tests (no requiere instalar dependencias si usa Docker)
-python manage.py test user_service.tests
-
-# Si el comando anterior falla por falta de dependencias, ejecute:
-pip install django psycopg2-binary
-python manage.py test user_service.tests
+docker compose exec user-service python manage.py test user_service.tests -v 2
 ```
 
 Lo que prueba:
 - test_1_list_users_returns_json: Verifica que GET /users devuelva un JSON con la clave "users"
-- test_2_create_user_with_valid_data: Verifica que POST /users cree un usuario y devuelva un ID
+- test_2_create_user_returns_201: Verifica que POST /users cree un usuario y devuelva codigo 201
 - test_3_update_user_returns_success: Verifica que PUT /users/:id actualice correctamente
 - test_4_delete_user_returns_success: Verifica que DELETE /users/:id elimine correctamente
-- test_5_create_user_without_name_fails: Verifica que crear un usuario sin nombre devuelva error 400
+- test_5_create_user_without_email_creates_with_default: Verifica que crear un usuario sin campos opcionales funcione
 
 ### Tests de Flask (Product Service) - 5 tests
 
-Estos tests verifican las operaciones CRUD de productos y la validacion de datos.
+Primero instalar pytest dentro del contenedor, luego ejecutar los tests:
 
 ```bash
-# 1. Navegar al directorio del servicio
-cd product-service
-
-# 2. Instalar dependencias (si no se han instalado antes)
-pip install flask pymongo pytest
-
-# 3. Ejecutar los tests
-python -m pytest test_app.py -v
+docker compose exec product-service pip install pytest
+docker compose exec product-service python -m pytest test_app.py -v
 ```
 
 Lo que prueba:
 - test_1_list_products_returns_json: Verifica que GET /products devuelva una lista
-- test_2_create_product_returns_id: Verifica que POST /products cree un producto
-- test_3_update_product_returns_success: Verifica que PUT /products/:id actualice
-- test_4_delete_product_returns_success: Verifica que DELETE /products/:id elimine
-- test_5_create_product_missing_price_fails: Verifica que crear sin precio falle
+- test_2_create_product_returns_201: Verifica que POST /products cree un producto y devuelva codigo 201
+- test_3_update_product_not_found_returns_404: Verifica que PUT /products/:id devuelva 404 si el producto no existe
+- test_4_delete_product_not_found_returns_404: Verifica que DELETE /products/:id devuelva 404 si no existe
+- test_5_create_product_without_name_returns_400: Verifica que crear sin nombre devuelva error 400
 
 ### Tests de Flask (Notification Service) - 5 tests
 
-Estos tests verifican las operaciones CRUD de notificaciones y la validacion de datos.
+Primero instalar pytest dentro del contenedor, luego ejecutar los tests:
 
 ```bash
-# 1. Navegar al directorio del servicio
-cd notification-service
-
-# 2. Instalar dependencias (si no se han instalado antes)
-pip install flask pytest
-
-# 3. Ejecutar los tests
-python -m pytest test_app.py -v
+docker compose exec notification-service pip install pytest
+docker compose exec notification-service python -m pytest test_app.py -v
 ```
 
 Lo que prueba:
 - test_1_list_notifications_returns_json: Verifica que GET /notify devuelva datos
-- test_2_create_notification_returns_success: Verifica que POST /notify cree una notificacion
-- test_3_update_notification_returns_success: Verifica que PUT /notify/:id actualice
-- test_4_delete_notification_returns_success: Verifica que DELETE /notify/:id elimine
-- test_5_create_notification_missing_message_fails: Verifica que crear sin mensaje falle
+- test_2_create_notification_returns_201: Verifica que POST /notify cree una notificacion con codigo 201
+- test_3_update_notification_returns_success: Verifica que PUT /notify/:id actualice correctamente
+- test_4_delete_notification_returns_success: Verifica que DELETE /notify/:id elimine correctamente
+- test_5_create_notification_missing_message_fails: Verifica que crear sin mensaje devuelva error
 
 ### Tests de Express (API Gateway) - 6 tests
 
-Estos tests verifican el enrutamiento del API Gateway. Requieren que los servicios esten corriendo con Docker.
+Ejecutar los tests directamente dentro del contenedor del API Gateway:
 
 ```bash
-# 1. Asegurarse de que los servicios esten ejecutandose
-docker compose up -d
-
-# 2. Navegar al directorio del API Gateway
-cd api-gateway
-
-# 3. Instalar dependencias (si no se han instalado antes)
-npm install
-
-# 4. Ejecutar los tests
-node test_gateway.js
+docker compose exec api-gateway node test_gateway.js
 ```
 
 Lo que prueba:
@@ -570,20 +542,11 @@ Lo que prueba:
 
 ### Tests de Express (Order Service) - 4 tests
 
-Estos tests verifican las operaciones CRUD de ordenes. Requieren que los servicios esten corriendo con Docker.
+Primero instalar axios dentro del contenedor y copiar el archivo de tests, luego ejecutar:
 
 ```bash
-# 1. Asegurarse de que los servicios esten ejecutandose
-docker compose up -d
-
-# 2. Navegar al directorio del Order Service
-cd order-service
-
-# 3. Instalar dependencias (si no se han instalado antes)
-npm install
-
-# 4. Ejecutar los tests
-node test_orders.js
+docker compose exec -w /app order-service npm install axios
+docker compose exec order-service node test_orders.js
 ```
 
 Lo que prueba:
@@ -592,14 +555,33 @@ Lo que prueba:
 - PUT /orders/:id updates an order: Verifica que PUT /orders/:id actualice una orden
 - DELETE /orders/:id deletes an order: Verifica que DELETE /orders/:id elimine una orden
 
+### Ejecutar todos los tests en una sola linea
+
+```bash
+# Product Service
+docker compose exec product-service pip install pytest && docker compose exec product-service python -m pytest test_app.py -v
+
+# Notification Service
+docker compose exec notification-service pip install pytest && docker compose exec notification-service python -m pytest test_app.py -v
+
+# API Gateway
+docker compose exec api-gateway node test_gateway.js
+
+# Order Service
+docker compose exec -w /app order-service npm install axios && docker compose exec order-service node test_orders.js
+
+# User Service
+docker compose exec user-service python manage.py test user_service.tests -v 2
+```
+
 ### Resumen de tests
 
 | Servicio | Framework | Cantidad de tests | Lo que prueba |
 |----------|-----------|-------------------|---------------|
-| User Service | Django | 5 | Listar, crear, actualizar, eliminar usuarios y validacion de datos |
-| Product Service | Flask | 5 | Listar, crear, actualizar, eliminar productos y validacion de datos |
-| Notification Service | Flask | 5 | Listar, crear, actualizar, eliminar notificaciones y validacion de datos |
-| API Gateway | Express | 6 | Health check, listar usuarios, productos y ordenes, login exitoso y login fallido |
+| User Service | Django | 5 | Listar, crear, actualizar, eliminar usuarios y manejo de datos opcionales |
+| Product Service | Flask | 5 | Listar, crear (201), actualizar (404 si no existe), eliminar (404) y validacion de nombre requerido |
+| Notification Service | Flask | 5 | Listar, crear (201), actualizar, eliminar y validacion de mensaje requerido |
+| API Gateway | Express | 6 | Health check, listar usuarios/productos/ordenes, login exitoso y login fallido (401) |
 | Order Service | Express | 4 | Listar, crear, actualizar, eliminar ordenes |
 | Total | - | 25 | Supera el minimo requerido de 15 |
 
@@ -731,12 +713,23 @@ docker compose logs api-gateway
 
 ### Testing
 ```bash
-# Ejecutar todos los tests
-python manage.py test user_service.tests    # Django
-python -m pytest product-service/test_app.py # Flask
-python -m pytest notification-service/test_app.py # Flask
-node api-gateway/test_gateway.js             # Express
-node order-service/test_orders.js            # Express
+# Product Service (instalar pytest primero)
+docker compose exec product-service pip install pytest
+docker compose exec product-service python -m pytest test_app.py -v
+
+# Notification Service (instalar pytest primero)
+docker compose exec notification-service pip install pytest
+docker compose exec notification-service python -m pytest test_app.py -v
+
+# API Gateway
+docker compose exec api-gateway node test_gateway.js
+
+# Order Service (instalar axios primero)
+docker compose exec -w /app order-service npm install axios
+docker compose exec order-service node test_orders.js
+
+# User Service
+docker compose exec user-service python manage.py test user_service.tests -v 2
 ```
 
 ### Pruebas de estres
